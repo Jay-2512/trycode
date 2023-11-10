@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>C++ Compiler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container label {
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>tryCode - Test code with ease!</h1>
+    <div class="form-container">
+        <form action="/compile" method="post" enctype="multipart/form-data">
+            <label for="code">Select C++ code file:</label>
+            <input type="file" id="code" name="code" accept=".cpp">
+            <label for="testcase">Select testcase zip file:</label>
+            <input type="file" id="testcase" name="testcase" accept=".zip">
+            <input type="submit" value="Compile">
+        </form>
+    </div>
+</body>
+</html>

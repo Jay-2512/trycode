@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .passed {
+            color: green;
+        }
+
+        .failed {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Compilation Output:</h1>
+    <pre>{{ compile_output }}</pre>
+
+    <h1>Test Results:</h1>
+    <table>
+        <tr>
+            <th>Test Case</th>
+            <th>Execution Time</th>
+            <th>Status</th>
+        </tr>
+        {% for input_file, result in execution_times.items() %}
+        <tr>
+            <td>{{ input_file }}</td>
+            <td>{{ result['execution_time'] }} seconds</td>
+            <td class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}">
+                {{ result['status'] }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
