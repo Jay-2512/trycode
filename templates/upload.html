@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block title %}tryCode-Upload Files{% endblock %} {%
+block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='./stylesheets/upload.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<main class="screen-main upload">
+  <div class="form-container">
+    <h1>Upload Files</h1>
+    <form action="/compile" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="code" id="code-label" class="btn-secondary"
+          >Select C++ code file</label
+        >
+        <input type="file" id="code" name="code" accept=".cpp" />
+      </div>
+      <div>
+        <label for="testcase" id="testcase-label" class="btn-secondary"
+          >Select testcase zip file</label
+        >
+        <input type="file" id="testcase" name="testcase" accept=".zip" />
+      </div>
+      <input class="btn-primary" type="submit" value="compile" />
+    </form>
+  </div>
+</main>
+
+{% endblock %}

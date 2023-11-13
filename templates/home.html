@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='./stylesheets/home.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="screen-main home">
+  <div class="head-container">
+    <h1>try<span style="color: #54b84f">Code</span></h1>
+    <h3>Test code with ease!</h3>
+  </div>
+  <div class="button-container_home">
+    <a href="#" class="btn-secondary">Write your code</a>
+    <a href="{{url_for('upload_files')}}" class="btn-primary">Test your code</a>
+  </div>
+</main>
+{% endblock %}
