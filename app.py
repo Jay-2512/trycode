@@ -10,6 +10,10 @@ app = Flask(__name__)
 def index():
     return render_template('home.html')
 
+@app.route('/typeCode')
+def typeCode():
+    return render_template('typeCode.html')
+
 @app.route('/upload')
 def upload_files():
     return render_template('upload.html')
@@ -40,11 +44,11 @@ def compile_code():
         with open(output_path, 'r') as f:
             expected_output = f.read().strip()
 
-        start_time = time.time()  
-
         os.system('g++ main.cpp -o program')
 
-        program_output = subprocess.getoutput(f'./program < {input_path}').strip()
+        start_time = time.time()  
+        program_output = subprocess.getoutput('./program < {}'.format(input_path)).strip()
+
         end_time = time.time()  
         execution_time = end_time - start_time
 
@@ -60,6 +64,18 @@ def compile_code():
             }
 
     return render_template('result.html', execution_times=execution_times)
+
+@app.route('/compileCode', methods=['POST'])
+def compileCode():
+    code = request.form['code']
+    with open('program.cpp', 'w') as file:
+        file.write(code)
+
+    compile_command = 'g++ -o program program.cpp'
+    compile_output = subprocess.getoutput(f'time -f "Compilation Time: %E" {compile_command}')
+    subprocess.getoutput('rm program')
+
+    return compile_output
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6776)
