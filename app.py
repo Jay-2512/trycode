@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import subprocess
 import zipfile
 import os
@@ -40,6 +40,8 @@ def compile_code():
 
     execution_times = {}
 
+    result_text = ''  
+
     for input_file, output_file in zip(input_files, output_files):
         input_path = os.path.join(testcase_folder, input_file)
         output_path = os.path.join(testcase_folder, output_file)
@@ -63,20 +65,40 @@ def compile_code():
         if program_output == expected_output:
             execution_times[input_file] = {
                 'execution_time': execution_time,
-                'status': 'Passed'
+                'status': 'Passed',
+                'expected_output': expected_output,
+                'program_output': program_output
             }
         else:
             execution_times[input_file] = {
                 'execution_time': execution_time,
-                'status': 'Failed'
+                'status': 'Failed',
+                'expected_output': expected_output,
+                'program_output': program_output
             }
+
+        result_text += f'Input File: {input_file}\n'
+        result_text += f'Execution Time: {execution_time} seconds\n'
+        result_text += f'Status: {execution_times[input_file]["status"]}\n'
+        result_text += f'Expected Output:\n{expected_output}\n'
+        result_text += f'Program Output:\n{program_output}\n\n'
 
     os.remove(code_filename)
     os.remove(testcase_filename)
     os.remove('program')
-    shutil.rmtree(testcase_folder)
 
-    return render_template('result.html', execution_times=execution_times)
+    result_filename = str(uuid.uuid4()) + '.txt'
+    result_path = os.path.join(testcase_folder, result_filename)
+    with open(result_path, 'w') as f:
+        f.write(result_text)
+
+    return render_template('result.html', execution_times=execution_times, result_filename=result_filename)
+
+@app.route('/download/<result_filename>')
+def download_result(result_filename):
+    testcase_folder = os.path.dirname(result_filename)
+    result_path = os.path.join(testcase_folder, result_filename)
+    return send_file(result_path, as_attachment=True)
 
 @app.route('/compileCode', methods=['POST'])
 def compileCode():
