@@ -1,12 +1,13 @@
-{% extends 'base.html' %} {% block title %}tryCode-Test Results{% endblock %} {%
-block styles %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='./stylesheets/result.css') }}"
-/>
-{% endblock %} {% block content %}
+{% extends 'base.html' %}
+
+{% block title %}tryCode-Test Results{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='./stylesheets/result.css') }}" />
+{% endblock %}
+
+{% block content %}
 <main class="screen-main result">
-  <!-- <pre>{{compile_output}}</pre> -->
   <div class="result-container">
     <h1>Test Results</h1>
     <table>
@@ -17,46 +18,19 @@ block styles %}
       </tr>
       {% for input_file, result in execution_times.items() %}
       <tr>
-        <td
-          class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}"
-        >
+        <td class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}">
           {{ input_file }}
         </td>
-        <td
-          class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}"
-        >
+        <td class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}">
           {{ result['execution_time'] }} seconds
         </td>
-        <td
-          class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}"
-        >
+        <td class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}">
           {{ result['status'] }}
         </td>
       </tr>
       {% endfor %}
     </table>
+    <a href="{{ url_for('download_result', result_filename=result_filename) }}">Download Result File</a>
   </div>
 </main>
 {% endblock %}
-
-<!-- <body>
-    <h1>Compilation Output:</h1>
-    <pre>{{ compile_output }}</pre>
-
-    <table>
-        <tr>
-            <th>Test Case</th>
-            <th>Execution Time</th>
-            <th>Status</th>
-        </tr>
-        {% for input_file, result in execution_times.items() %}
-        <tr>
-            <td>{{ input_file }}</td>
-            <td>{{ result['execution_time'] }} seconds</td>
-            <td class="{% if result['status'] == 'Passed' %}passed{% else %}failed{% endif %}">
-                {{ result['status'] }}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</body> -->
