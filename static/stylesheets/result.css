@@ -1,0 +1,59 @@
+.result-container {
+  margin-top: 8%;
+  height: 80%;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: scroll;
+  gap: 20px;
+}
+
+.result-container h1 {
+  color: #54b84f;
+}
+
+tbody td {
+  background-color: rgba(255, 255, 255, 0);
+  transition: all 0.2s linear;
+  transition-delay: 0.3s, 0s;
+  /* 2. Animate the opacity on hover */
+  opacity: 0.6;
+}
+tbody tr:hover td {
+  transition-delay: 0s, 0s;
+  opacity: 1;
+  font-size: 1.2em;
+}
+
+td {
+  /* 3. Scale the text using transform on hover */
+  transform-origin: center left;
+  transition-property: transform;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Codepen styling */
+* {
+  box-sizing: border-box;
+}
+
+table {
+  width: 90%;
+  margin: 0 5%;
+  text-align: left;
+  color: white;
+}
+th,
+td {
+  padding: 0.5em;
+}
+.passed {
+  color: #54b84f;
+}
+
+.failed {
+  color: red;
+}

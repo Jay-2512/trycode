@@ -1,0 +1,51 @@
+.form-container {
+  height: 70%;
+  width: 30%;
+  border-radius: 10%;
+  border: 2px dashed #54b84f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+}
+
+.form-container h1 {
+  color: white;
+  font-size: 25px;
+  font-weight: lighter;
+  margin-bottom: 10%;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 50%;
+  width: 100%;
+}
+
+form div {
+  width: 70%;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10%;
+  text-align: center;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+input[type="submit"] {
+  width: 40%;
+  font-size: 15px;
+}
+
+form div input {
+  margin-top: 10px;
+  align-self: center;
+}

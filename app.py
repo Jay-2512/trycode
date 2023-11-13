@@ -8,7 +8,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('home.html')
+
+@app.route('/upload')
+def upload_files():
+    return render_template('upload.html')
 
 @app.route('/compile', methods=['POST'])
 def compile_code():
@@ -29,6 +33,7 @@ def compile_code():
         input_path = os.path.join('testcase', input_file)
         output_path = os.path.join('testcase', output_file)
 
+
         with open(input_path, 'r') as f:
             input_data = f.read().strip()
 
@@ -37,8 +42,9 @@ def compile_code():
 
         start_time = time.time()  
 
-        program_output = subprocess.getoutput(f'./program < {input_path}').strip()
+        os.system('g++ main.cpp -o program')
 
+        program_output = subprocess.getoutput(f'./program < {input_path}').strip()
         end_time = time.time()  
         execution_time = end_time - start_time
 
