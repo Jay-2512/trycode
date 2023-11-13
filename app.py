@@ -31,25 +31,25 @@ def compile_code():
     input_files = sorted([f for f in os.listdir('testcase') if f.startswith('input')])
     output_files = sorted([f for f in os.listdir('testcase') if f.startswith('output')])
 
-    execution_times = {}  
+    execution_times = {}
 
     for input_file, output_file in zip(input_files, output_files):
         input_path = os.path.join('testcase', input_file)
         output_path = os.path.join('testcase', output_file)
 
-
         with open(input_path, 'r') as f:
-            input_data = f.read().strip()
+            input_data = f.readlines()  
 
         with open(output_path, 'r') as f:
             expected_output = f.read().strip()
 
         os.system('g++ main.cpp -o program')
 
-        start_time = time.time()  
-        program_output = subprocess.getoutput('./program < {}'.format(input_path)).strip()
+        start_time = time.time()
+        process = subprocess.run(['./program'], input='\n'.join(input_data), capture_output=True, text=True)
+        program_output = process.stdout.strip()
 
-        end_time = time.time()  
+        end_time = time.time()
         execution_time = end_time - start_time
 
         if program_output == expected_output:
@@ -64,6 +64,8 @@ def compile_code():
             }
 
     return render_template('result.html', execution_times=execution_times)
+
+
 
 @app.route('/compileCode', methods=['POST'])
 def compileCode():
