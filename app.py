@@ -134,4 +134,8 @@ def compileCode():
     return compile_output
 
 if __name__ == '__main__':
+<<<<<<< HEAD
+    app.run(host='0.0.0.0', port=6773)
+=======
     app.run(host='0.0.0.0', port=1818)
+>>>>>>> 468df958aeb88f6d7a00272e677ec8f34d45698a
