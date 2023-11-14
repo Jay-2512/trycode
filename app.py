@@ -5,10 +5,9 @@ import os
 import time
 import uuid
 import shutil
+import pandas as pd
 
 app = Flask(__name__)
-
-global result_path
 
 @app.route('/')
 def index():
@@ -25,6 +24,7 @@ def upload_files():
 @app.route('/compile', methods=['POST'])
 def compile_code():
     global result_path
+
     code = request.files['code']
     testcase = request.files['testcase']
     code_filename = str(uuid.uuid4()) + '.cpp'
@@ -43,15 +43,22 @@ def compile_code():
     output_files = sorted([f for f in os.listdir(testcase_folder) if f.startswith('output')])
 
     execution_times = {}
+    result_text = ''
 
-    result_text = ''  
+    result_data = {
+        'Input File': [],
+        'Execution Time': [],
+        'Status': [],
+        'Expected Output': [],
+        'Program Output': []
+    }
 
     for input_file, output_file in zip(input_files, output_files):
         input_path = os.path.join(testcase_folder, input_file)
         output_path = os.path.join(testcase_folder, output_file)
 
         with open(input_path, 'r') as f:
-            input_data = f.readlines()  
+            input_data = f.readlines()
 
         with open(output_path, 'r') as f:
             expected_output = f.read().strip()
@@ -67,36 +74,37 @@ def compile_code():
         execution_time = end_time - start_time
 
         if program_output == expected_output:
-            execution_times[input_file] = {
-                'execution_time': execution_time,
-                'status': 'Passed',
-                'expected_output': expected_output,
-                'program_output': program_output
-            }
+            status = 'Passed'
         else:
-            execution_times[input_file] = {
-                'execution_time': execution_time,
-                'status': 'Failed',
-                'expected_output': expected_output,
-                'program_output': program_output
-            }
+            status = 'Failed'
+
+        execution_times[input_file] = {
+            'execution_time': execution_time,
+            'status': status,
+            'expected_output': expected_output,
+            'program_output': program_output
+        }
 
         result_text += f'Input File: {input_file}\n'
         result_text += f'Execution Time: {execution_time} seconds\n'
-        result_text += f'Status: {execution_times[input_file]["status"]}\n'
+        result_text += f'Status: {status}\n'
         result_text += f'Expected Output:\n{expected_output}\n'
         result_text += f'Program Output:\n{program_output}\n\n'
+
+        result_data['Input File'].append(input_file)
+        result_data['Execution Time'].append(execution_time)
+        result_data['Status'].append(status)
+        result_data['Expected Output'].append(expected_output)
+        result_data['Program Output'].append(program_output)
 
     os.remove(code_filename)
     os.remove(testcase_filename)
     os.remove(compiled_program_filename)
 
-    result_filename = str(uuid.uuid4()) + '.txt'
-    result_path = os.path.join(testcase_folder, result_filename)
-    with open(result_path, 'w') as f:
-        f.write(result_text)
 
-    #shutil.rmtree(testcase_folder)
+    result_filename = str(uuid.uuid4()) + '.xlsx'
+    result_path = os.path.join(testcase_folder, result_filename)
+    pd.DataFrame(result_data).to_excel(result_path, index=False)
 
     return render_template('result.html', execution_times=execution_times, result_filename=result_filename)
 
@@ -113,6 +121,7 @@ def compileCode():
     code = request.form['code']
     code_filename = str(uuid.uuid4()) + '.cpp'
     compiled_program_filename = str(uuid.uuid4())
+    
     with open(code_filename, 'w') as file:
         file.write(code)
 
@@ -125,4 +134,4 @@ def compileCode():
     return compile_output
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=6776)
+    app.run(host='0.0.0.0', port=1818)
