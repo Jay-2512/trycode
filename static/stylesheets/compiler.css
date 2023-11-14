@@ -1,0 +1,52 @@
+.compiler {
+  flex-direction: column;
+}
+.header {
+  color: white;
+  margin-top: 100px;
+  position: absolute;
+  top: -10px;
+}
+
+.menu-bar {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10%;
+}
+
+.menu-bar h1 {
+  font-size: 15px;
+  margin-left: 10px;
+  color: white;
+}
+
+.run-code {
+  margin-right: 10px;
+  background-color: black;
+}
+
+.sub-container {
+  height: 70%;
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-container {
+  height: 100%;
+  width: 50%;
+  font-family: monospace !important;
+  font-size: 15px;
+  margin: 5px;
+}
+
+.result-container {
+  height: 100%;
+  width: 50%;
+  color: #54b84f;
+}

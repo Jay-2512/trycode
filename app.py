@@ -8,6 +8,8 @@ import shutil
 
 app = Flask(__name__)
 
+global result_path
+
 @app.route('/')
 def index():
     return render_template('home.html')
@@ -22,6 +24,7 @@ def upload_files():
 
 @app.route('/compile', methods=['POST'])
 def compile_code():
+    global result_path
     code = request.files['code']
     testcase = request.files['testcase']
     code_filename = str(uuid.uuid4()) + '.cpp'
@@ -92,13 +95,16 @@ def compile_code():
     with open(result_path, 'w') as f:
         f.write(result_text)
 
+
     return render_template('result.html', execution_times=execution_times, result_filename=result_filename)
 
 @app.route('/download/<result_filename>')
 def download_result(result_filename):
-    testcase_folder = os.path.dirname(result_filename)
-    result_path = os.path.join(testcase_folder, result_filename)
     return send_file(result_path, as_attachment=True)
+
+@app.route('/compile-code')
+def code_compiler():
+    return render_template('compiler.html')
 
 @app.route('/compileCode', methods=['POST'])
 def compileCode():
