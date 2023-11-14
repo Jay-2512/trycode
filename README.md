@@ -1,4 +1,10 @@
-# tryCode - Test your code with ease
+<p align="center">
+  <img width="200" src="https://github.com/agnath18K/trycode/assets/75850310/a1be2e90-e387-4459-8dbd-4b7d7cba69ca" alt="tClogo">
+    <br>
+          <br>
+  <b>tryCode - Test your code with ease</b>
+</p>
+
 
 ## Features
 
