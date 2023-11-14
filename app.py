@@ -9,6 +9,9 @@ import pandas as pd
 
 app = Flask(__name__)
 
+completion_percentage = 0.00
+
+
 @app.route('/')
 def index():
     return render_template('home.html')
@@ -19,7 +22,7 @@ def typeCode():
 
 @app.route('/upload')
 def upload_files():
-    return render_template('upload.html')
+    return render_template('upload.html', completion_percentage=completion_percentage)
 
 @app.route('/compile', methods=['POST'])
 def compile_code():
@@ -53,9 +56,18 @@ def compile_code():
         'Program Output': []
     }
 
+    current_input_index = 0
+    
+    total_inputs = len(input_files)
+
     for input_file, output_file in zip(input_files, output_files):
+        
         input_path = os.path.join(testcase_folder, input_file)
         output_path = os.path.join(testcase_folder, output_file)
+
+        current_input_index += 1
+        completion_percentage = int((current_input_index / total_inputs) * 100)
+        print(completion_percentage)
 
         with open(input_path, 'r') as f:
             input_data = f.readlines()
