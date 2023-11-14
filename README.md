@@ -19,6 +19,7 @@
 - Python (version 3.8.1)
     ```bash
     sudo  apt install python3
+    sudo  apt install python3-pip
     sudo  apt install python3.8-venv
 - g++ compiler for C++ (version 12.3)
 
@@ -34,11 +35,11 @@
 2. Install dependencies:
 
     ```bash
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
     ```
 3. Activate virtual enviroment:
     ```bash
-   python -m venv venv
+   python3 -m venv venv
   
    source venv/bin/activate  # For Unix/Linux
    
