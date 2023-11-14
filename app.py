@@ -28,6 +28,7 @@ def compile_code():
     code = request.files['code']
     testcase = request.files['testcase']
     code_filename = str(uuid.uuid4()) + '.cpp'
+    compiled_program_filename = str(uuid.uuid4())
     testcase_filename = str(uuid.uuid4()) + '.zip'
     code.save(code_filename)
     testcase.save(testcase_filename)
@@ -55,11 +56,11 @@ def compile_code():
         with open(output_path, 'r') as f:
             expected_output = f.read().strip()
 
-        compile_command = f'g++ -o program {code_filename}'
+        compile_command = f'g++ -o {compiled_program_filename} {code_filename}'
         compile_output = subprocess.getoutput(f'time -f "Compilation Time: %E" {compile_command}')
 
         start_time = time.time()
-        process = subprocess.run(['./program'], input='\n'.join(input_data), capture_output=True, text=True)
+        process = subprocess.run([f'./{compiled_program_filename}'], input='\n'.join(input_data), capture_output=True, text=True)
         program_output = process.stdout.strip()
 
         end_time = time.time()
@@ -88,13 +89,14 @@ def compile_code():
 
     os.remove(code_filename)
     os.remove(testcase_filename)
-    os.remove('program')
+    os.remove(compiled_program_filename)
 
     result_filename = str(uuid.uuid4()) + '.txt'
     result_path = os.path.join(testcase_folder, result_filename)
     with open(result_path, 'w') as f:
         f.write(result_text)
 
+    #shutil.rmtree(testcase_folder)
 
     return render_template('result.html', execution_times=execution_times, result_filename=result_filename)
 
@@ -110,14 +112,15 @@ def code_compiler():
 def compileCode():
     code = request.form['code']
     code_filename = str(uuid.uuid4()) + '.cpp'
+    compiled_program_filename = str(uuid.uuid4())
     with open(code_filename, 'w') as file:
         file.write(code)
 
-    compile_command = f'g++ -o program {code_filename}'
+    compile_command = f'g++ -o {compiled_program_filename} {code_filename}'
     compile_output = subprocess.getoutput(f'time -f "Compilation Time: %E" {compile_command}')
 
     os.remove(code_filename)
-    os.remove('program')
+    os.remove(compiled_program_filename)
 
     return compile_output
 
