@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block title %}tryCode-Test Results{% endblock %} {%
+block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='./stylesheets/compiler.css') }}"
+/>
+<script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+{% endblock %} {% block content %}
+
+<main class="screen-main compiler">
+  <h1 class="header">Code <span style="color: #54b84f">Compiler</span></h1>
+  <div class="menu-bar">
+    <h1>Write your C++ Code</h1>
+    <button class="run-code btn-secondary" onclick="getText()">RUN CODE</button>
+  </div>
+  <div class="sub-container">
+    <div class="code-container" id="editor">
+      #include "iostream"<br />
+      using namespace std; <br />
+      int main() <br />
+      { <br />
+      cout << "tryCode"; <br />
+      return 0; <br />
+      } <br />
+    </div>
+    <div class="result-container"></div>
+  </div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.1/ace.js"></script>
+<script src="{{url_for('static', filename= './scripts/richText.js')}}"></script>
+{% endblock %}
